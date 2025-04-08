@@ -50,7 +50,7 @@ const Navbar = () => {
               className="text-gray-700 hover:text-yellow-400 transition-colors duration-300"
               onClick={() => setShow(!show)}
             >
-              JOBS
+                CROPS
             </Link>
           </li>
           {isAuthenticated ? (

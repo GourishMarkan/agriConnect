@@ -81,7 +81,7 @@ const JobPost = () => {
   const handlePostJob = (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("title", jobPostDetails.title);
+    formData.append("Crop", jobPostDetails.title);
     formData.append("jobType", jobPostDetails.jobType);
     formData.append("location", jobPostDetails.location);
     formData.append("companyName", jobPostDetails.companyName);
