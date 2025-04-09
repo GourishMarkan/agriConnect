@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const jobSchema = new mongoose.Schema({
-  title: {
+  cropName: {
     type: String,
     required: true,
   },
@@ -14,6 +14,22 @@ const jobSchema = new mongoose.Schema({
   location: {
     type: String,
     required: true,
+  },
+  quality: {
+    type: String,
+    required: true,
+  },
+  contactNumber: {
+    type: Number,
+    required: [true, "Please Enter Your Phone Number"],
+    min: [10, "phone number should be of 10 digits"],
+    // max: [10, "phone number cannot exceed 10 digits"],
+  },
+  email: {
+    type: String,
+    required: [true, "Please Enter Your Email"],
+    validator: [validator.isEmail, "Please Enter Valid Email"],
+    unique: true,
   },
   companyName: {
     type: String,
