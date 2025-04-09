@@ -8,32 +8,32 @@ const jobSchema = new mongoose.Schema({
   jobType: {
     type: String, //full-time, part-time, contract, internship, temporary
     required: true,
-    enum: ["full-time", "part-time"],
+    // enum: ["full-time", "part-time"],
   },
 
   location: {
     type: String,
-    required: true,
+    // required: true,
   },
   quality: {
     type: String,
-    required: true,
+    // required: true,
   },
   contactNumber: {
     type: Number,
-    required: [true, "Please Enter Your Phone Number"],
+    // required: [true, "Please Enter Your Phone Number"],
     min: [10, "phone number should be of 10 digits"],
     // max: [10, "phone number cannot exceed 10 digits"],
   },
   email: {
     type: String,
-    required: [true, "Please Enter Your Email"],
+    // required: [true, "Please Enter Your Email"],
     validator: [validator.isEmail, "Please Enter Valid Email"],
     unique: true,
   },
   companyName: {
     type: String,
-    required: true,
+    // required: true,
   },
   introduction: {
     type: String,
@@ -41,18 +41,18 @@ const jobSchema = new mongoose.Schema({
   },
   responsibilities: {
     type: String,
-    required: true,
+    // required: true,
   },
   qualifications: {
     type: String,
-    required: true,
+    // required: true,
   },
   offers: {
     type: String, //salary, benefits, perks
   },
   salary: {
     type: String,
-    required: true,
+    // required: true,
   },
   hiringMultipleCandidates: {
     type: String,
@@ -67,7 +67,7 @@ const jobSchema = new mongoose.Schema({
   },
   jobNiche: {
     type: String,
-    required: true,
+    // required: true,
   },
   newsLettersSent: {
     type: Boolean, //send job to person who subscribed to news letter
@@ -80,7 +80,7 @@ const jobSchema = new mongoose.Schema({
   postedBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-    required: true,
+    // required: true,
   },
 });
 

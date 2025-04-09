@@ -6,12 +6,12 @@ const BASE_URL = import.meta.env.VITE_BASE_URL;
 const jobSlice = createSlice({
   name: "jobs",
   initialState: {
-    jobs: [],
+    crops: [],
     loading: false,
     error: null,
     message: null,
     singleJob: {},
-    myJobs: [],
+    myCrops: [],
     limit: 10,
     totalPages: 1,
   },
@@ -22,7 +22,7 @@ const jobSlice = createSlice({
     },
     successForAllJobs(state, action) {
       state.loading = false;
-      state.jobs = action.payload.jobs;
+      state.jobs = action.payload.crops;
       state.message = action.payload.message;
       state.totalPages = action.payload.totalPages;
       state.error = null;
@@ -84,13 +84,13 @@ const jobSlice = createSlice({
     },
     successForMyJobs(state, action) {
       state.loading = false;
-      state.myJobs = action.payload.myJobs;
+      state.myCrops = action.payload.myCrops;
       state.totalPages = action.payload.totalPages;
       state.error = null;
     },
     failureForMyJobs(state, action) {
       state.loading = false;
-      state.myJobs = state.myJobs;
+      state.myCrops = state.myCrops;
       state.error = action.payload;
     },
     clearAllErrors(state) {

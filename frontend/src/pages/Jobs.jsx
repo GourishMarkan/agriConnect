@@ -16,7 +16,7 @@ const Jobs = () => {
   const [niche, setNiche] = useState("");
   const [selectedNiche, setSelectedNiche] = useState("");
   const [searchKeyword, setSearchKeyword] = useState("");
-  const { jobs, loading, error, totalPages, limit, message } = useSelector(
+  const { crops, loading, error, totalPages, limit, message } = useSelector(
     (state) => state.jobs
   );
   const { isAuthenticated } = useSelector((state) => state.user);
@@ -191,8 +191,8 @@ const Jobs = () => {
               {/* job-container */}
               {/* grid gap-10 py-12 w-full grid-cols-2 */}
               <div className="container grid gap-10 py-12 w-full grid-cols-2 ">
-                {jobs &&
-                  jobs.map((element) => {
+                {crops &&
+                  crops.map((element) => {
                     return (
                       <div
                         className="transition duration-300 bg-[#f5f5f5] h-fit px-10 py-5 flex flex-col gap-1 rounded-md  no-underline hover:bg-slate-500 "
@@ -207,7 +207,7 @@ const Jobs = () => {
                             Hiring
                           </p>
                         )}
-                        <p className="">{element.title}</p>
+                        <p className="">{element.cropName}</p>
                         <p className="text-base text-gray-500">
                           {element.company}
                         </p>
