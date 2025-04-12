@@ -8,13 +8,11 @@ import {
   resetJobSlice,
 } from "../store/slices/jobSlice";
 import { Link, useNavigate } from "react-router-dom";
-import { FaSearch } from "react-icons/fa";
 import Pagination from "../components/Pagination";
+
 const Jobs = () => {
   const [city, setCity] = useState("");
-  const [selectedCity, setSelectedCity] = useState("");
   const [niche, setNiche] = useState("");
-  const [selectedNiche, setSelectedNiche] = useState("");
   const [searchKeyword, setSearchKeyword] = useState("");
   const { crops, loading, error, totalPages, limit, message } = useSelector(
     (state) => state.jobs
@@ -22,16 +20,8 @@ const Jobs = () => {
   const { isAuthenticated } = useSelector((state) => state.user);
   const navigateTo = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
-  const handleCityChange = (city) => {
-    setCity(city);
-  };
-  const handleNicheChange = (niche) => {
-    setNiche(niche);
-  };
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
   const dispatch = useDispatch();
+
   useEffect(() => {
     if (error) {
       toast.error(error);
@@ -47,205 +37,117 @@ const Jobs = () => {
     }
     dispatch(fetchJobs(city, niche, searchKeyword, currentPage, limit));
   }, [dispatch, city, niche, error, currentPage, limit]);
-  // const handleCityChange=(e)=>{
-  //   setCity(e.target.value);
-  // }
-  //  TODO add debouncing to search
+
   const handleSearch = () => {
     dispatch(fetchJobs(city, niche, searchKeyword));
   };
 
   const cities = [
-    "Bangalore",
-    "Nodia",
-    "Gurugram",
-    "Chandigarh",
-    "Mumbai",
-    "Pune",
-    "Chennai",
-    "Hyderabad",
-    "Kolkata",
-    "Jaipur",
-    "Indore",
-    "Ahmedabad",
-    "Mohali",
-    "Ludhiana",
-    "Surat",
+    "Bangalore", "Noida", "Gurugram", "Chandigarh", "Mumbai", "Pune",
+    "Chennai", "Hyderabad", "Kolkata", "Jaipur", "Indore",
+    "Ahmedabad", "Mohali", "Ludhiana", "Surat"
   ];
 
   const nichesArray = [
-    "Software Development",
-    "Web Development",
-    "Cybersecurity",
-    "Data Science",
-    "Artificial Intelligence",
-    "Cloud Computing",
-    "DevOps",
-    "Mobile App Development",
-    "Blockchain",
-    "Database Administration",
-    "Network Administration",
-    "UI/UX Design",
-    "Game Development",
-    "IoT (Internet of Things)",
-    "Big Data",
-    "Machine Learning",
-    "IT Project Management",
-    "IT Support and Helpdesk",
-    "Systems Administration",
-    "IT Consulting",
+    "wheat", "rice", "corn", "sugarcane", "cotton",
+    "soybean", "barley", "oats", "sorghum", "millet",
+    "peanuts", "sunflower", "canola", "coffee",
   ];
+
   return (
     <>
       {loading ? (
         <Spinner />
       ) : (
-        <section className=" py-10 px-25 m-h-[800px]">
-          <div className="flex flex-wrap relative justify-center w-[750px] mx-auto m-b-7.5">
-            <input
-              type="text"
-              value={searchKeyword}
-              onChange={(e) => setSearchKeyword(e.target.value)}
-              className="w-11/12   text-sm rounded-lg py-3 pr-32 pl-2 border border-gray-500  "
-            />
-            <button
-              className="absolute right-10 top-[11px] bg-[#dfdf07] text-[#111] font-medium py-0.5 px-2.5 rounded-lg border-none"
-              onClick={handleSearch}
-            >
-              Find Job
-            </button>
-            <FaSearch className="absolute top-4 right-6  text-[#111]   hidden" />
+        <section className="py-10 px-4 bg-gray-50 min-h-screen">
+          {/* Search Input */}
+          <div className="flex flex-wrap justify-center w-full max-w-2xl mx-auto mb-10">
+            <div className="relative w-full">
+              <input
+                type="text"
+                value={searchKeyword}
+                onChange={(e) => setSearchKeyword(e.target.value)}
+                placeholder="Search for crops..."
+                className="w-full text-sm rounded-lg py-3 pr-32 pl-4 border border-gray-300 shadow-sm focus:ring-2 focus:ring-indigo-400"
+              />
+              <button
+                className="absolute right-1.5 top-1.5 bg-[#50a83d] hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-md"
+                onClick={handleSearch}
+              >
+                Find Crop
+              </button>
+            </div>
           </div>
-          {/*  */}
-          <div className="flex    mt-5  ">
-            <div className=" hidden md:flex ml-4  flex-col gap-12">
-              <div className=" flex  mt-3 flex-col gap-1.5 ">
-                <h2 className=" text-base font-medium pb-5 border-b border-gray-500 mb-5">
-                  Filter Job By City
-                </h2>
-                {cities.map((city, index) => (
-                  <div className="flex items-center gap-4 " key={index}>
-                    <input
-                      type="radio"
-                      id={city}
-                      name="city"
-                      value={city}
-                      // checked={selectedCity === city}
-                      onChange={() => {
-                        handleCityChange(city);
-                      }}
-                    />
-                    <label htmlFor={city}>{city}</label>
-                  </div>
-                ))}
-              </div>
-              <div className=" flex  flex-col gap-1.5 ">
-                <h2 className=" text-base font-medium pb-5 border-b border-gray-500 mb-5">
-                  Filter Job By Niche
-                </h2>
-                {nichesArray.map((niche, index) => (
-                  <div className="flex items-center gap-4" key={index}>
-                    <input
-                      type="radio"
-                      id={niche}
-                      name="niche"
-                      value={niche}
-                      // checked={selectedNiche === niche}
-                      onChange={() => {
-                        handleNicheChange(niche);
-                      }}
-                    />
-                    <label htmlFor={niche}>{niche}</label>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="w-full md:w-3/4 ml-2">
-              {/* mobile filter */}
-              <div className=" flex flex-wrap gap-5  mt-5 md:hidden ">
-                <select
-                  className="px-2 border py-1 md:p-0 "
-                  value={city}
-                  onChange={(e) => setCity(e.target.value)}
-                >
-                  <option value={city}>Filter By City</option>
-                  {cities.map((city, index) => (
-                    <option value={city} key={index}>
-                      {city}
-                    </option>
-                  ))}
-                </select>
-                <select
-                  className="px-2 border py-1 md:p-0 "
-                  value={niche}
-                  onChange={(e) => setNiche(e.target.value)}
-                >
-                  <option value="">Filter By Niche</option>
-                  {nichesArray.map((niche, index) => (
-                    <option value={niche} key={index}>
-                      {niche}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              {/* job-container */}
-              {/* grid gap-10 py-12 w-full grid-cols-2 */}
-              <div className="container grid gap-10 py-12 w-full grid-cols-2 ">
-                {crops &&
-                  crops.map((element) => {
-                    return (
-                      <div
-                        className="transition duration-300 bg-[#f5f5f5] h-fit px-10 py-5 flex flex-col gap-1 rounded-md  no-underline hover:bg-slate-500 "
-                        key={element._id}
-                      >
-                        {element.hiringMultipleCandidates === "Yes" ? (
-                          <p className="text-[16px] text-[#008b00] bg-[#008b0033] px-1 py-0.5 rounded-md w-fit">
-                            Hiring Multiple Candidates
-                          </p>
-                        ) : (
-                          <p className="text-base text-[#0091ff] bg-[#0091ff56] py-0.5 px-1 rounded-md w-fit">
-                            Hiring
-                          </p>
-                        )}
-                        <p className="">{element.cropName}</p>
-                        <p className="text-base text-gray-500">
-                          {element.company}
-                        </p>
-                        <p className="text-base text-gray-500">
-                          {element.location}
-                        </p>
-                        <p className="text-base text-gray-500">
-                          <span className="font-semibold text-[#111] font-base">
-                            Rs. {element.salary}
-                          </span>
-                        </p>
-                        <p className="text-base text-gray-500">
-                          <span className="font-semibold text-[#111] font-base">
-                            Posted On:
-                          </span>{" "}
-                          {element.jobPostedOn.substring(0, 10)}
-                        </p>
-                        <div className="flex justify-end gap-4.5">
-                          <Link
-                            className=""
-                            to={`/post/application/${element._id}`}
-                          >
-                            Apply Now
-                          </Link>
-                        </div>
-                      </div>
-                    );
-                  })}
-                <div className="grid-flow-col-dense"></div>
-                <div className="">
-                  <Pagination
-                    totalPages={totalPages}
-                    onPageChange={handlePageChange}
-                    currentPage={currentPage}
+
+          {/* Filters & Jobs */}
+          <div className="flex flex-col md:flex-row gap-6">
+            {/* Sidebar Filters */}
+            <aside className="hidden md:flex flex-col w-64 p-4 bg-white rounded-lg shadow-md">
+              <h2 className="text-lg font-semibold border-b pb-2 mb-4">Filter by City</h2>
+              {cities.map((city, idx) => (
+                <label key={idx} className="flex items-center mb-2 text-sm">
+                  <input
+                    type="radio"
+                    name="city"
+                    value={city}
+                    onChange={() => setCity(city)}
+                    className="mr-2"
                   />
+                  {city}
+                </label>
+              ))}
+              <h2 className="text-lg font-semibold mt-6 border-b pb-2 mb-4">Filter by Crops</h2>
+              {nichesArray.map((niche, idx) => (
+                <label key={idx} className="flex items-center mb-2 text-sm">
+                  <input
+                    type="radio"
+                    name="niche"
+                    value={niche}
+                    onChange={() => setNiche(niche)}
+                    className="mr-2"
+                  />
+                  {niche}
+                </label>
+              ))}
+            </aside>
+
+            {/* Jobs Grid */}
+            <main className="flex-1 grid gap-6 grid-cols-1 sm:grid-cols-2">
+              {crops && crops.map((job) => (
+                <div
+                  key={job._id}
+                  className="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300"
+                >
+                  <p className={`text-sm font-medium px-2 py-1 rounded w-fit mb-2 ${job.hiringMultipleCandidates === "Yes" ? "text-green-700 bg-green-100" : "text-blue-700 bg-blue-100"}`}>
+                    {job.hiringMultipleCandidates === "Yes" ? "Hiring Multiple Candidates" : "Hiring"}
+                  </p>
+                  <h3 className="text-lg font-bold text-gray-800 mb-1">{job.cropName}</h3>
+                  <p className="text-sm text-gray-600">{job.company}</p>
+                  <p className="text-sm text-gray-600">{job.location}</p>
+                  <p className="text-sm text-gray-600">
+                    <span className="font-semibold text-gray-800">Rs. {job.salary}</span>
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    <span className="font-semibold text-gray-800">Posted On:</span> {job.jobPostedOn.substring(0, 10)}
+                  </p>
+                  <div className="mt-4 text-right">
+                    <Link
+                      to={`/post/application/${job._id}`}
+                      className="inline-block bg-indigo-500 text-white py-2 px-4 rounded-md hover:bg-indigo-600 transition"
+                    >
+                      Apply Now
+                    </Link>
+                  </div>
                 </div>
+              ))}
+              <div className="col-span-full mt-6">
+                <Pagination
+                  totalPages={totalPages}
+                  onPageChange={setCurrentPage}
+                  currentPage={currentPage}
+                />
               </div>
-            </div>
+            </main>
           </div>
         </section>
       )}

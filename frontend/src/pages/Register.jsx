@@ -3,8 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { register, clearAllUserErrors } from "../store/slices/userSlice";
 import { Link, useNavigate } from "react-router-dom";
-import { FaAddressBook, FaPencilAlt, FaRegUser } from "react-icons/fa";
-import { MdCategory, MdOutlineMailOutline } from "react-icons/md";
+import {
+  FaAddressBook,
+  FaPencilAlt,
+  FaRegUser,
+} from "react-icons/fa";
+import {
+  MdCategory,
+  MdOutlineMailOutline,
+} from "react-icons/md";
 import { FaPhoneFlip } from "react-icons/fa6";
 import { RiLock2Fill } from "react-icons/ri";
 
@@ -13,8 +20,8 @@ const Register = () => {
     name: "",
     email: "",
     role: "",
-    password: 0,
-    phoneNumber: 0,
+    password: "",
+    phoneNumber: "",
     address: "",
     firstNiche: "",
     secondNiche: "",
@@ -22,6 +29,7 @@ const Register = () => {
     resume: "",
     coverLetter: "",
   });
+
   const nichesArray = [
     "Software Development",
     "Web Development",
@@ -44,51 +52,31 @@ const Register = () => {
     "Systems Administration",
     "IT Consulting",
   ];
-  // const[name,setName]=useState("");
-  // const[email,setName]=useState("");
-  // const[name,setName]=useState("");
-  // const[name,setName]=useState("");
-  // const[name,setName]=useState("");
-  // const[name,setName]=useState("");
-  // const[name,setName]=useState("");
-  // const[name,setName]=useState("");
-  // const[name,setName]=useState("");
-  // const[name,setName]=useState("");
-  // const[name,setName]=useState("");
+
+  const dispatch = useDispatch();
+  const navigateTo = useNavigate();
+  const { loading, isAuthenticated, error } = useSelector((state) => state.user);
+
   const resumeHandler = (e) => {
     const file = e.target.files[0];
     setUserDetails({ ...userDetails, resume: file });
   };
-  const { loading, isAuthenticated, error, message } = useSelector(
-    (state) => state.user
-  );
-  const dispatch = useDispatch();
-  const navigateTo = useNavigate();
 
   const handleRegister = (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("role", userDetails.role);
-    formData.append("name", userDetails.name);
-    formData.append("email", userDetails.email);
-    formData.append("phoneNumber", userDetails.phoneNumber);
-    formData.append("address", userDetails.address);
-    formData.append("password", userDetails.password);
-    if (userDetails.role === "Job Seeker") {
-      formData.append("firstNiche", userDetails.firstNiche);
-      formData.append("secondNiche", userDetails.secondNiche);
-      formData.append("thirdNiche", userDetails.thirdNiche);
-      formData.append("coverLetter", userDetails.coverLetter);
-      formData.append("resume", userDetails.resume);
-    }
-    console.log(userDetails);
+    Object.entries(userDetails).forEach(([key, value]) => {
+      if (value) formData.append(key, value);
+    });
 
     dispatch(register(formData));
   };
+
   const handleUserDetails = (e) => {
     const { name, value } = e.target;
     setUserDetails({ ...userDetails, [name]: value });
   };
+
   useEffect(() => {
     if (error) {
       toast.error(error);
@@ -97,224 +85,224 @@ const Register = () => {
     if (isAuthenticated) {
       navigateTo("/login");
     }
-  }, [dispatch, error, isAuthenticated, loading, message]);
+  }, [error, isAuthenticated, dispatch, navigateTo]);
 
   return (
-    <section className="flex mx-auto min-h-screen min-w-[1500px] max-w-[1500px]  sm:min-w-full">
-      <div className="flex-1 flex flex-col justify-center bg-[#deffd6] py-5 px-5 m-w-[1500px]">
-        <div className="flex gap-3 flex-col text-center mb-7">
-          <h3 className="text-2xl">Create a new account</h3>
-        </div>
-        <form className="flex flex-col gap-5" onSubmit={handleRegister}>
-          <div className="flex gap-5">
-            <div className="flex flex-col  gap-2 flex-1">
-              <label>Register As</label>
-              <div className="flex items-center rounded-lg">
-                <select
-                  className="bg-[#87878778] p-2 border-none w-full "
-                  value={userDetails.role}
-                  onChange={(e) => {
-                    setUserDetails({ ...userDetails, role: e.target.value });
-                  }}
-                >
-                  <option value="">Select Role</option>
-                  <option value="Employer">Register as an Employer</option>
-                  <option value="Job Seeker">Register as a Job Seeker</option>
-                </select>
-                <FaRegUser className="w-2/12 bg-[#50a83d] text-2xl bg-[#50a83d] h-10 p-2 text-[#fff]" />
-              </div>
-            </div>
-            <div className="flex flex-col gap-2 flex-1">
-              <label htmlFor="name" className="">
-                Name
-              </label>
-              <div className="flex items-center rounded-lg">
-                <input
-                  className="bg-[#87878778] p-2 border-none w-full"
-                  name="name"
-                  type="text"
-                  placeholder="Your Name"
-                  value={userDetails.name}
-                  onChange={handleUserDetails}
-                />
-                <FaPencilAlt className="w-2/12 text-2xl bg-[#50a83d] h-10 p-2 text-[#fff] " />
-              </div>
-            </div>
-          </div>
-          <div className="flex gap-5">
-            <div className="flex flex-col flex-1 gap-2">
-              <label htmlFor="email">Email Address</label>
-              <div className="flex items-center rounded-lg">
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Your Email Address"
-                  className="bg-[#87878778] p-2 border-none w-full"
-                  value={userDetails.email}
-                  onChange={handleUserDetails}
-                />
-                <MdOutlineMailOutline className="w-2/12 text-2xl bg-[#50a83d] h-10 p-2 text-[#fff]" />
-              </div>
-            </div>
+    <section className="flex justify-center bg-[#deffd6] min-h-screen px-4 py-10">
+      <div className="w-full max-w-5xl bg-white shadow-xl rounded-lg p-8 space-y-6">
+        <h2 className="text-3xl font-bold text-center text-green-700">
+          Create a New Account
+        </h2>
 
-            <div className="flex flex-col flex-1 gap-2">
-              <label htmlFor="phoneNumber">Phone Number</label>
-              <div className="flex items-center rounded-lg">
-                <input
-                  type="number"
-                  name="phoneNumber"
-                  placeholder="98764-12345"
-                  className="bg-[#87878778] p-2 border-none w-full"
-                  value={userDetails.phoneNumber}
-                  onChange={handleUserDetails}
-                />
-                <FaPhoneFlip className="w-2/12 text-2xl bg-[#50a83d] h-10 p-2 text-[#fff]" />
-              </div>
-            </div>
+        <form className="space-y-6" onSubmit={handleRegister}>
+          {/* Role & Name */}
+          <div className="flex flex-col md:flex-row gap-4">
+            <FormField
+              label="Register As"
+              name="role"
+              value={userDetails.role}
+              type="select"
+              options={[
+                { value: "", label: "Select Role" },
+                { value: "Employer", label: "Register as a Farmer" },
+                { value: "Job Seeker", label: "Register as Arhiya" },
+              ]}
+              icon={<FaRegUser />}
+              onChange={handleUserDetails}
+            />
+            <FormField
+              label="Name"
+              name="name"
+              value={userDetails.name}
+              type="text"
+              placeholder="Your Name"
+              icon={<FaPencilAlt />}
+              onChange={handleUserDetails}
+            />
           </div>
-          <div className="flex gap-5">
-            <div className="flex flex-col flex-1 gap-2">
-              <label htmlFor="address"> Address</label>
-              <div className="flex items-center rounded-lg">
-                <input
-                  name="address"
-                  type="text"
-                  placeholder="Your Address"
-                  className="bg-[#87878778] p-2 border-none w-full"
-                  value={userDetails.address}
-                  onChange={handleUserDetails}
-                />
-                <FaAddressBook className="w-2/12 text-2xl bg-[#50a83d] h-10 p-2 text-[#fff]" />
-              </div>
-            </div>
 
-            <div className="flex flex-col flex-1 gap-2">
-              <label htmlFor="password">Password</label>
-              <div className="flex items-center rounded-lg">
-                <input
-                  type="number"
-                  name="password"
-                  placeholder="98764-12345"
-                  className="bg-[#87878778] p-2 border-none w-full"
-                  value={userDetails.password}
-                  onChange={handleUserDetails}
-                />
-                <RiLock2Fill className="w-2/12 text-2xl bg-[#50a83d] h-10 p-2 text-[#fff]" />
-              </div>
-            </div>
+          {/* Email & Phone */}
+          <div className="flex flex-col md:flex-row gap-4">
+            <FormField
+              label="Email Address"
+              name="email"
+              value={userDetails.email}
+              type="email"
+              placeholder="you@example.com"
+              icon={<MdOutlineMailOutline />}
+              onChange={handleUserDetails}
+            />
+            <FormField
+              label="Phone Number"
+              name="phoneNumber"
+              value={userDetails.phoneNumber}
+              type="text"
+              placeholder="98764-12345"
+              icon={<FaPhoneFlip />}
+              onChange={handleUserDetails}
+            />
           </div>
+
+          {/* Address & Password */}
+          <div className="flex flex-col md:flex-row gap-4">
+            <FormField
+              label="Address"
+              name="address"
+              value={userDetails.address}
+              type="text"
+              placeholder="Your Address"
+              icon={<FaAddressBook />}
+              onChange={handleUserDetails}
+            />
+            <FormField
+              label="Password"
+              name="password"
+              value={userDetails.password}
+              type="password"
+              placeholder="********"
+              icon={<RiLock2Fill />}
+              onChange={handleUserDetails}
+            />
+          </div>
+
+          {/* Niche Fields - Only if Job Seeker */}
           {userDetails.role === "Job Seeker" && (
             <>
-              <div className="flex gap-5">
-                <div className="flex flex-col flex-1 gap-2">
-                  <label htmlFor="firstNiche">First Niche</label>
-                  <div className="flex items-center rounded-lg">
-                    <select
-                      name="firstNiche"
-                      className="bg-[#87878778] p-2 border-none w-full"
-                      value={userDetails.firstNiche}
-                      onChange={handleUserDetails}
-                    >
-                      <option value="">Your Niche</option>
-                      {nichesArray.map((niche, index) => (
-                        <option value={niche} key={index}>
-                          {niche}
-                        </option>
-                      ))}
-                    </select>
-                    <MdCategory className="w-2/12 text-2xl bg-[#50a83d] h-10 p-2 text-[#fff]" />
-                  </div>
-                </div>
-                <div className="flex flex-col flex-1 gap-2">
-                  <label htmlFor="secondNiche">Second Niche</label>
-                  <div className="flex items-center rounded-lg">
-                    <select
-                      name="secondNiche"
-                      className="bg-[#87878778] p-2 border-none w-full"
-                      value={userDetails.secondNiche}
-                      onChange={handleUserDetails}
-                    >
-                      <option value="">Your Niche</option>
-                      {nichesArray.map((niche, index) => (
-                        <option value={niche} key={index}>
-                          {niche}
-                        </option>
-                      ))}
-                    </select>
-                    <MdCategory className="w-2/12 text-2xl bg-[#50a83d] h-10 p-2 text-[#fff]" />
-                  </div>
-                </div>
-                <div className="flex flex-1 flex-col gap-2">
-                  <label htmlFor="thirdNiche">Your Third Niche</label>
-                  <div className="flex items-center rounded-lg">
-                    <select
-                      name="thirdNiche"
-                      className="bg-[#87878778] p-2 border-none w-full"
-                      value={userDetails.thirdNiche}
-                      onChange={handleUserDetails}
-                    >
-                      <option value="">Your Niche</option>
-                      {nichesArray.map((niche, index) => (
-                        <option value={niche} key={index}>
-                          {niche}
-                        </option>
-                      ))}
-                    </select>
-                    <MdCategory className="w-2/12 text-2xl bg-[#50a83d] h-10 p-2 text-[#fff]" />
-                  </div>
-                </div>
+              <div className="flex flex-col md:flex-row gap-4">
+                <FormField
+                  label="First Niche"
+                  name="firstNiche"
+                  value={userDetails.firstNiche}
+                  type="select"
+                  options={nichesArray.map((niche) => ({
+                    value: niche,
+                    label: niche,
+                  }))}
+                  icon={<MdCategory />}
+                  onChange={handleUserDetails}
+                />
+                <FormField
+                  label="Second Niche"
+                  name="secondNiche"
+                  value={userDetails.secondNiche}
+                  type="select"
+                  options={nichesArray.map((niche) => ({
+                    value: niche,
+                    label: niche,
+                  }))}
+                  icon={<MdCategory />}
+                  onChange={handleUserDetails}
+                />
+                <FormField
+                  label="Third Niche"
+                  name="thirdNiche"
+                  value={userDetails.thirdNiche}
+                  type="select"
+                  options={nichesArray.map((niche) => ({
+                    value: niche,
+                    label: niche,
+                  }))}
+                  icon={<MdCategory />}
+                  onChange={handleUserDetails}
+                />
               </div>
-              <div className="flex gap-5">
-                <div className="flex flex-col flex-1 gap-2">
-                  <label htmlFor="coverLetter">Cover Letter</label>
-                  <div className="flex items-center rounded-lg">
-                    <textarea
-                      // type="file"
-                      name="coverLetter"
-                      value={userDetails.coverLetter}
-                      className="bg-[#87878778] p-2 border-none w-full"
-                      onChange={handleUserDetails}
-                      // style={{ border: "none" }}
-                      rows={10}
-                    />
-                    {/* <MdCategory className="w-1/12 text-2xl bg-[#50a83d] h-11 p-2 text-[#fff]" /> */}
-                  </div>
-                </div>
+
+              {/* Cover Letter */}
+              <div>
+                <label className="block text-sm font-semibold mb-1">
+                  Cover Letter
+                </label>
+                <textarea
+                  name="coverLetter"
+                  value={userDetails.coverLetter}
+                  onChange={handleUserDetails}
+                  rows={6}
+                  className="w-full bg-gray-100 rounded-md p-3 border border-gray-300 focus:outline-green-600 resize-none"
+                />
               </div>
-              <div className="flex gap-5">
-                <div className="flex flex-col flex-1 gap-2">
-                  <label htmlFor="resume">Resume</label>
-                  <div className="flex items-center rounded-lg">
-                    <input
-                      name="resume"
-                      type="file"
-                      className="bg-[#87878778] p-2 border-none w-full"
-                      onChange={resumeHandler}
-                      style={{ border: "none" }}
-                    />
-                    {/* <MdCategory className="w-1/12 text-2xl bg-[#50a83d] h-11 p-2 text-[#fff]" /> */}
-                  </div>
-                </div>
+
+              {/* Resume Upload */}
+              <div>
+                <label className="block text-sm font-semibold mb-1">
+                  Resume
+                </label>
+                <input
+                  type="file"
+                  name="resume"
+                  onChange={resumeHandler}
+                  className="w-full bg-gray-100 rounded-md p-3 border border-gray-300"
+                />
               </div>
             </>
           )}
+
+          {/* Buttons */}
           <button
-            className="p-3 text-center border-none mt-6 font-bold text-[#fff] bg-[#50a83d] text-lg rounded-lg"
             type="submit"
             disabled={loading}
+            className={`w-full py-3 font-semibold text-white rounded-md ${
+              loading
+                ? "bg-green-400 cursor-not-allowed"
+                : "bg-green-600 hover:bg-green-700 transition"
+            }`}
           >
-            Register
+            {loading ? "Registering..." : "Register"}
           </button>
+
           <Link
-            className="p-3 text-center border border-solid border-[#50a83d] mt-6 font-bold text-[#50a83d] text-lg rounded-lg underline"
             to="/login"
+            className="block text-center mt-4 text-green-700 font-semibold underline"
           >
-            {" "}
-            Login Now
+            Already have an account? Login Now
           </Link>
         </form>
       </div>
     </section>
+  );
+};
+
+const FormField = ({
+  label,
+  name,
+  value,
+  type,
+  placeholder,
+  options,
+  icon,
+  onChange,
+}) => {
+  return (
+    <div className="flex flex-col flex-1">
+      <label className="text-sm font-medium mb-1">{label}</label>
+      <div className="flex items-center bg-gray-100 rounded-md overflow-hidden">
+        {type === "select" ? (
+          <select
+            name={name}
+            value={value}
+            onChange={onChange}
+            className="w-full px-3 py-2 bg-transparent text-sm focus:outline-none"
+          >
+            {(options || []).map((opt, idx) => (
+              <option value={opt.value} key={idx}>
+                {opt.label}
+              </option>
+            ))}
+          </select>
+        ) : (
+          <input
+            name={name}
+            type={type}
+            value={value}
+            placeholder={placeholder}
+            onChange={onChange}
+            className="w-full px-3 py-2 bg-transparent text-sm focus:outline-none"
+          />
+        )}
+        <div className="bg-green-600 p-2 text-white text-lg h-full">
+          {icon}
+        </div>
+      </div>
+    </div>
   );
 };
 
