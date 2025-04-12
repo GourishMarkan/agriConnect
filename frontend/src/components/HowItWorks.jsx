@@ -91,11 +91,10 @@ const HowItWorks = () => {
           <div style={styles.iconContainer}>
             <BiSolidLike style={styles.icon} />
           </div>
-          <h4 style={styles.text}>Hire or Get Hired</h4>
+          <h4 style={styles.text}>Weather Forcast</h4>
           <p style={styles.description}>
-            Employers can shortlist candidates and extend job offers. Job
-            seekers can review job offers and accept positions that align with
-            their career goals.
+          Weather forecasting helps farmers plan better by predicting rain, storms, and temperature, reducing crop loss and improving yield.
+          It also helps them use water and other resources more efficiently.
           </p>
         </div>
       </div>
