@@ -3,11 +3,11 @@ import mongoose from "mongoose";
 const jobSchema = new mongoose.Schema({
   cropName: {
     type: String,
-    required: true,
+    // required: true,
   },
   jobType: {
     type: String, //full-time, part-time, contract, internship, temporary
-    required: true,
+    // required: true,
     // enum: ["full-time", "part-time"],
   },
 
@@ -28,7 +28,7 @@ const jobSchema = new mongoose.Schema({
   email: {
     type: String,
     // required: [true, "Please Enter Your Email"],
-    validator: [validator.isEmail, "Please Enter Valid Email"],
+    // validator: [validator.isEmail, "Please Enter Valid Email"],
     unique: true,
   },
   companyName: {
@@ -57,8 +57,8 @@ const jobSchema = new mongoose.Schema({
   hiringMultipleCandidates: {
     type: String,
     // required: true,
-    default: "No",
-    enum: ["Yes", "No"],
+    // default: "No",
+    // enum: ["Yes", "No"],
   },
   personalWebSite: {
     title: String,

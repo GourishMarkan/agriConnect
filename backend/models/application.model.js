@@ -6,24 +6,24 @@ const applicationSchema = new mongoose.Schema({
     id: {
       type: mongoose.Schema.Types.ObjectId,
       // ref: "User",
-      required: true,
+      // required: true,
     },
     name: {
       type: String,
-      required: true,
+      // required: true,
     },
     email: {
       type: String,
-      required: true,
-      validate: [validator.isEmail, "Please provide a valid email address"],
+      // required: true,
+      // validate: [validator.isEmail, "Please provide a valid email address"],
     },
     phoneNumber: {
       type: String,
-      required: true,
+      // required: true,
     },
     address: {
       type: String,
-      required: true,
+      // required: true,
     },
     resume: {
       public_id: String,
@@ -31,34 +31,34 @@ const applicationSchema = new mongoose.Schema({
     },
     coverLetter: {
       type: String,
-      required: true,
+      // required: true,
     },
     role: {
       type: String,
-      enum: ["Job Seeker"],
-      required: true,
+      // enum: ["Job Seeker"],
+      // required: true,
     },
   },
   employerInfo: {
     id: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
+      // required: true,
     },
     role: {
       type: String,
-      enum: ["Employer"],
-      required: true,
+      // enum: ["Employer"],
+      // required: true,
     },
   },
   jobInfo: {
     jobId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Job",
-      required: true,
+      // required: true,
     },
     jobTitle: {
       type: String,
-      required: true,
+      // required: true,
     },
   },
   deletedBy: {
